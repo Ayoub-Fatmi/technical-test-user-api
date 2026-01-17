@@ -1,0 +1,276 @@
+{
+  "info": {
+    "name": "Technical Test - User API (All cases)",
+    "_postman_id": "3d8a52a1-6a6e-4b56-aea1-6f6b2c9d8b11",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST Register (SUCCESS) -> 201 + body",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response is JSON and has username', function () {",
+              "  pm.response.to.be.json;",
+              "  const body = pm.response.json();",
+              "  pm.expect(body).to.have.property('username');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"ayoub\",\n  \"birthdate\": \"1995-03-10\",\n  \"country\": \"France\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"MALE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "GET Details (SUCCESS) -> 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response is JSON and has username', function () {",
+              "  pm.response.to.be.json;",
+              "  const body = pm.response.json();",
+              "  pm.expect(body).to.have.property('username');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/users/ayoub",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "ayoub"]
+        }
+      }
+    },
+    {
+      "name": "POST Register (NOT FRENCH) -> 400 (String)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Body contains French residents message', function () {",
+              "  pm.expect(pm.response.text().toLowerCase()).to.include('french');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"Gerd\",\n  \"birthdate\": \"1990-01-01\",\n  \"country\": \"Germany\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"MALE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "POST Register (MINOR) -> 400 (String)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Body contains adults message', function () {",
+              "  pm.expect(pm.response.text().toLowerCase()).to.include('adult');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"clemtent\",\n  \"birthdate\": \"2010-01-01\",\n  \"country\": \"France\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"MALE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "POST Register (DUPLICATE) -> 409 (String)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 409', function () {",
+              "  pm.response.to.have.status(409);",
+              "});",
+              "",
+              "pm.test('Body mentions exists', function () {",
+              "  pm.expect(pm.response.text().toLowerCase()).to.include('exist');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"ayoub\",\n  \"birthdate\": \"1995-03-10\",\n  \"country\": \"France\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"MALE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "GET Details (NOT FOUND) -> 404 (String)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 404', function () {",
+              "  pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test('Body is not empty', function () {",
+              "  pm.expect(pm.response.text()).to.be.a('string').and.not.empty;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/users/unknown_user",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "celia"]
+        }
+      }
+    },
+    {
+      "name": "POST Register (VALIDATION username blank) -> 400 (String)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Message mentions username or invalid body', function () {",
+              "  const t = pm.response.text().toLowerCase();",
+              "  pm.expect(t).to.satisfy(v => v.includes('username') || v.includes('invalid request body'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"\",\n  \"birthdate\": \"1995-03-10\",\n  \"country\": \"France\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"MALE\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    },
+    {
+      "name": "POST Register (INVALID ENUM gender) -> 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Body is not empty', function () {",
+              "  pm.expect(pm.response.text()).to.be.a('string').and.not.empty;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"celia\",\n  \"birthdate\": \"1995-03-10\",\n  \"country\": \"France\",\n  \"phone\": \"06 12 34 56 78\",\n  \"gender\": \"UNKNOWN\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/users/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "users", "register"]
+        }
+      }
+    }
+  ]
+}
